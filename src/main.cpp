@@ -1,5 +1,7 @@
+#include <chrono>
 #include <fstream>
 #include <iostream>
+#include <string>
 
 #include "camera.h"
 #include "color.h"
@@ -8,6 +10,8 @@
 #include "render.h"
 #include "rtweekend.h"
 #include "sphere.h"
+
+using namespace std::chrono;
 
 hittable_list random_scene() {
     hittable_list world;
@@ -59,14 +63,21 @@ hittable_list random_scene() {
     return world;
 }
 
-int main() {
+int main(int argc, char* argv[]) {
     // Image
 
-    const auto aspect_ratio = 3.0 / 2.0;
-    const int image_width = 400;
+    // const auto aspect_ratio = 3.0 / 2.0;
+    // const int image_width = 400;
+    // const int image_height = static_cast<int>(image_width / aspect_ratio);
+    // const int samples_per_pixel = 100;
+    // const int max_depth = 50;
+
+    const int workers = std::stoi(argv[1]);
+    const auto aspect_ratio = std::stod(argv[2]) / std::stod(argv[3]);
+    const int image_width = std::stoi(argv[4]);
     const int image_height = static_cast<int>(image_width / aspect_ratio);
-    const int samples_per_pixel = 100;
-    const int max_depth = 50;
+    const int samples_per_pixel = std::stoi(argv[5]);
+    const int max_depth = std::stoi(argv[6]);
 
     // World
 
@@ -74,7 +85,9 @@ int main() {
 
     // Camera
 
-    point3 lookfrom(13, 2, 3);
+    // point3 lookfrom(13, 2, 3);
+
+    point3 lookfrom(std::stoi(argv[7]), std::stoi(argv[8]), std::stoi(argv[9]));
     point3 lookat(0, 0, 0);
     vec3 vup(0, 1, 0);
     auto dist_to_focus = 10.0;
@@ -87,8 +100,19 @@ int main() {
 
     matrix image;
     config setup = {image_width, image_height, samples_per_pixel, max_depth};
-    // sequential_render(setup, world, cam, image);
-    parallel_render(setup, world, cam, image, 12);
+    if (workers == 1) {
+        auto start = high_resolution_clock::now();
+        sequential_render(setup, world, cam, image);
+        auto end = high_resolution_clock::now();
+        auto duration = duration_cast<nanoseconds>(end - start);
+        std::cout << duration.count();
+    } else {
+        auto start = high_resolution_clock::now();
+        parallel_render(setup, world, cam, image, workers);
+        auto end = high_resolution_clock::now();
+        auto duration = duration_cast<nanoseconds>(end - start);
+        std::cout << duration.count();
+    }
 
     std::ofstream outputFile("image.ppm");
     if (outputFile.is_open()) {
