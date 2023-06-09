@@ -5,8 +5,7 @@
 
 class camera {
    public:
-    camera(point3 lookfrom, point3 lookat, vec3 vup,
-           double vfov,  // vertical field-of-view in degrees
+    camera(point3 lookfrom, point3 lookat, vec3 vup, double vfov,
            double aspect_ratio, double aperture, double focus_dist) {
         auto theta = degrees_to_radians(vfov);
         auto h = tan(theta / 2);

@@ -16,22 +16,23 @@ class RequestHandler(BaseHTTPRequestHandler):
         dict = json.loads(post_data)
 
         args = ['build\\ray-tracer.exe',
-        str(dict['num_threads']), # Numero de hilos : entero
-        str(dict['num_proporcion']), # Numerador de la proporcion : entero
-        str(dict['den_proporcion']), # Denominador de la proporcion : entero
-        str(dict['ancho_img']), # Ancho de la imagen : entero
-        str(dict['muestras_pixel']), # Muestras por pixel : entero
-        str(dict['max_rayos']), # Numero maximo de rayos : entero
-        str(dict['x_coord']), # Coordenada X de la camara : double
-        str(dict['y_coord']), # Coordenada Y de la camara : double
-        str(dict['z_coord']), # Coordenada Z de la camara : double
-        str(dict['R_e1']), # Valor R para esfera 1 : entero
-        str(dict['G_e1']), # Valor G para esfera 1 : entero
-        str(dict['B_e1']), # Valor B para esfera 1 : entero
-        str(dict['R_e2']), # Valor R para esfera 2 : entero
-        str(dict['G_e2']), # Valor G para esfera 2 : entero
-        str(dict['B_e2']), # Valor B para esfera 2 : entero
-        str(dict['ref']), # Indice de refraccion : double
+        str(dict['num_threads']), # Numero de hilos : entero : 1
+        str(dict['num_proporcion']), # Numerador de la proporcion : entero : 2
+        str(dict['den_proporcion']), # Denominador de la proporcion : entero : 3
+        str(dict['ancho_img']), # Ancho de la imagen : entero : 4
+        str(dict['muestras_pixel']), # Muestras por pixel : entero : 5
+        str(dict['max_rayos']), # Numero maximo de rayos : entero : 6
+        str(dict['x_coord']), # Coordenada X de la camara : double : 7
+        str(dict['y_coord']), # Coordenada Y de la camara : double : 8
+        str(dict['z_coord']), # Coordenada Z de la camara : double : 9
+        str(dict['R_e1']), # Valor R para esfera 1 : entero : 10
+        str(dict['G_e1']), # Valor G para esfera 1 : entero : 11
+        str(dict['B_e1']), # Valor B para esfera 1 : entero : 12
+        str(dict['R_e2']), # Valor R para esfera 2 : entero : 13
+        str(dict['G_e2']), # Valor G para esfera 2 : entero : 14
+        str(dict['B_e2']), # Valor B para esfera 2 : entero : 15
+        str(dict['ref']), # Indice de refraccion : double : 16
+        str(dict['rand']), # Esferas aleatorias : double : 17
 		]
 
         result = subprocess.run(args, capture_output=True, shell=True)
